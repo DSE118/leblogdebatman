@@ -90,8 +90,8 @@
     {% if app.session.flashBag.has('success') %}
         <div class="container">
             <div class="row">
-                    {% for message in app.flashes('success') %}
-                    <div class="alert alert alert-success text-center col-12 my-3 alert-dismissible fade show fw-bold" role="alert">
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success text-center col-12 my-3 alert-dismissible fade show fw-bold" role="alert">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
