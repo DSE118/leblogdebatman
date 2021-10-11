@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Préfixes de la route et du nom des pages du blog
  *
- * @Route("/Blog", name="blog_")
+ * @Route("/blog", name="blog_")
  */
 class BlogController extends AbstractController
 {
@@ -26,13 +26,14 @@ class BlogController extends AbstractController
      */
     public function newPublication(Request $request): Response
     {
+
         $newArticle = new Article();
 
         $form = $this->createForm(NewArticleFormType::class, $newArticle);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted() && $form->isValid()){
 
             $newArticle
                 ->setAuthor($this->getUser())
@@ -62,17 +63,15 @@ class BlogController extends AbstractController
      *
      * @Route("/publications/liste/", name="publication_list")
      */
-    public function publicationList (): Response
+    public function publicationList(): Response
     {
 
         $articleRepo = $this->getDoctrine()->getRepository(Article::class);
 
         $articles = $articleRepo->findAll();
 
-        dump($articles);
-
         return $this->render('blog/publicationList.html.twig', [
-            'articles' => '$articles',
+            'articles' => $articles,
         ]);
     }
 
