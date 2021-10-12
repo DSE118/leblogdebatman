@@ -9,7 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 /**
  * Préfixes de la route et du nom des pages du blog
@@ -64,12 +67,28 @@ class BlogController extends AbstractController
      *
      * @Route("/publications/liste/", name="publication_list")
      */
-    public function publicationList(): Response
+    public function publicationList(Request $request, PaginatorInterface $paginator): Response
     {
 
-        $articleRepo = $this->getDoctrine()->getRepository(Article::class);
+        // Récupération du numéro de la page demandée dans l'URL
+        $requestedPage = $request->query->getInt('page', 1);
 
-        $articles = $articleRepo->findAll();
+        // Vérification que le numéro est positif
+        if ($requestedPage < 1){
+            throw new NotFoundHttpException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT a FROM App\Entity\Article a ORDER BY a.publicationDate DESC ');
+
+        // Récupération des articles
+        $articles = $paginator->paginate(
+            $query,
+            $requestedPage,
+            10
+        );
+
 
         return $this->render('blog/publicationList.html.twig', [
             'articles' => $articles,
