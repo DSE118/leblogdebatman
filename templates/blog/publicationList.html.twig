@@ -53,6 +53,13 @@
                                     </div>
 
                                     <footer class="blockquote-footer my-2">Publié le <strong>{{ article.publicationDate|date('d/m/Y à H\\hi') }}</strong> par <strong>{{ article.author.pseudonym }}</strong></footer>
+                                    {% if is_granted('ROLE_ADMIN') %}
+
+                                        <p class="mb-0 mt-3">
+                                            <a class="text-decoration-none text-danger" href="{{ path('blog_publication_delete', {'id': article.id, csrf_token: csrf_token('blog_publication_delete_' ~ article.id ) }) }}"><i class="fas fa-trash-alt me-1"></i>Supprimer</a>
+                                        </p>
+
+                                    {% endif %}
 
                                 </div>
 
