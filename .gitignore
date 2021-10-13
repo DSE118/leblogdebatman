@@ -22,4 +22,6 @@
 ### exclusions persos
 .idea/
 /migrations/*.php
+/public/images/profils/*
+!/public/images/profils/.gitignore
 ###

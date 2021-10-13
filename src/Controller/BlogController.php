@@ -203,7 +203,6 @@ class BlogController extends AbstractController
             return $this->redirectToRoute('blog_publication_view', [
                 'slug' => $article->getSlug(),
             ]);
-
         }
 
         return $this->render('blog/publicationEdit.html.twig', [
